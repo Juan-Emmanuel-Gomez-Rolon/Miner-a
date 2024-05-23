@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--Bootstrap-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <!--Css propio-->
+    <link rel="stylesheet" href="index.css">
+    <title>Pagina principal</title>
+</head>
+
+<body>
+    <!--Seccion de archivo csv-->
+    <div class="">
+        <div class="">
+            <h1>Subir archivo</h1>
+        </div>
+        <form action="/User" method="post" enctype="multipart/form-data">
+            <div>
+                <div class="input-file">
+                    <input type="file" name="file" id="file-exel" value="Seleccionar">
+                </div>
+                <div class="group-buttons">
+                    <button type="submit"  id="btn-upload">Subir</button>
+                </div>
+            </div>
+        </form>
+        <div class="e">
+            <form action="/Delete" method="post" enctype="multipart/form-data">
+            <button type="submit"  id="btn-delete">Eliminar</button>
+        </form>
+        </div>
+    </div>
+
+<!--Query 1-->
+    <div class="querys">
+        <div class="title-querys">
+            <h1>Ejemplo 1</h1>
+            <div class="select">
+                <form action="/query1" method="get" enctype="multipart/form-data">
+                    <p class="title-query">Obtener la nombre, edad y club del equipo Juventus</p>
+                    <button type="submit" class="btn btn-primary" id="upload1">Resultado</button>
+                </form>
+            </div>
+        </div>
+        <!--Tablas-->
+        <div class="table">
+            <table id="query1" class="table table-striped table-hover">
+                <tr>
+                    <th>Nombre</th>
+                    <th>Edad</th>
+                    <th>Equipo</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!--Query 2-->
+    <div class="querys">
+        <div class="title-querys">
+            <h1>Ejemplo 2</h1>
+            <div class="select">
+                <form action="/query2" method="get" enctype="multipart/form-data">
+                    <p class="title-query">Obtener el nombre, nacionalidad y club del equipo Juventus</p>
+                    <button type="submit" class="btn btn-primary" id="upload2">Resultado</button>
+                </form>
+            </div>
+        </div>
+        <!--Tablas-->
+        <div class="table">
+            <table id="query2" class="table table-striped table-hover">
+                <tr>
+                    <th>Nombre</th>
+                    <th>Nationality</th>
+                    <th>Club</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!--Query 3-->
+    <div class="querys">
+        <div class="title-querys">
+            <h1>Ejemplo 3</h1>
+            <div class="select">
+                <form action="/query3" method="get" enctype="multipart/form-data">
+                    <p class="title-query">Mostrar el nombre , club y número de camiseta del equipo Juventus</p>
+                    <button type="submit" class="btn btn-primary" id="upload3">Resultado</button>
+                </form>
+            </div>
+        </div>
+        <!--Tablas-->
+        <div class="table">
+            <table id="query3" class="table table-striped table-hover">
+                <tr>
+                    <th>Nombre</th>
+                    <th>Club</th>
+                    <th>JerseyNumber</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!--Query 4-->
+    <div class="querys">
+        <div class="title-querys">
+            <h1>Ejemplo 4</h1>
+            <div class="select">
+                <form action="/query4" method="get" enctype="multipart/form-data">
+                    <p class="title-query">Mostrar el nombre de los jugadores, promedio y club del equipo Juventus</p>
+                    <button type="submit" class="btn btn-primary" id="upload4">Resultado</button>
+                </form>
+            </div>
+        </div>
+        <!--Tablas-->
+        <div class="table">
+            <table id="query4" class="table table-striped table-hover">
+                <tr>
+                    <th>Nombre</th>
+                    <th>Promedio</th>
+                    <th>Club</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!--Query 5-->
+    <div class="querys">
+        <div class="title-querys">
+            <h1>Ejemplo 5</h1>
+            <div class="select">
+                <form action="/query5" method="get" enctype="multipart/form-data">
+                    <p class="title-query">Mostrar el nombre de los jugadores, la peirna favorita del jugador y club del equipo Juventus</p>
+                    <button type="submit" class="btn btn-primary" id="upload5">Resultado</button>
+                </form>
+            </div>
+        </div>
+        <!--Tablas-->
+        <div class="table">
+            <table id="query5" class="table table-striped table-hover">
+                <tr>
+                    <th>Nombre</th>
+                    <th>Pierna</th>
+                    <th>Club</th>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <!--Finish secction querys-->
+
+
+
+
+    <!--Seccion de scrip-->
+    <script>
+        //Query1
+        document.addEventListener('DOMContentLoaded', function () {
+            let upload1 = document.getElementById('upload1');
+            upload1.addEventListener('click', function (e) {
+                e.preventDefault();
+                fetch('http://localhost:3000/query1?Club=Juventus').then(async function (resp) {
+                    let data = await resp.json();
+                    let tablaQuery = document.getElementById('query1');
+                    let bodyTable = document.createElement('tbody');
+                    //Style for bodyTable query1
+                    bodyTable.style.fontSize = '.9rem';
+
+                    data.forEach((d => {
+                        let fila = document.createElement('tr');
+
+                        td = document.createElement('td');
+                        td.innerText = d.Name;
+                        fila.appendChild(td);
+
+                        td = document.createElement('td');
+                        td.innerText = d.Age;
+                        fila.appendChild(td);
+
+                        td = document.createElement('td');
+                        td.innerText = d.Club;
+                        fila.appendChild(td);
+
+                        bodyTable.appendChild(fila);
+                    }));
+                    tablaQuery.appendChild(bodyTable);
+                });
+            });
+        });
+
+        //Query2
+        document.addEventListener('DOMContentLoaded', function () {
+            let upload2 = document.getElementById('upload2');
+            upload2.addEventListener('click', function (e) {
+                e.preventDefault();
+                fetch('http://localhost:3000/query2?Club=Juventus').then(async function (resp) {
+                    let data = await resp.json();
+                    let tablaQuery = document.getElementById('query2');
+                    let bodyTable = document.createElement('tbody');
+                    //Style for bodyTable query2
+                    bodyTable.style.fontSize = '.9rem';
+
+                    data.forEach((d => {
+                        let fila = document.createElement('tr');
+
+                        td = document.createElement('td');
+                        td.innerText = d.Name;
+                        fila.appendChild(td);
+
+                        td = document.createElement('td');
+                        td.innerText = d.Nationality;
+                        fila.appendChild(td);
+
+                        td = document.createElement('td');
+                        td.innerText = d.Club;
+                        fila.appendChild(td);
+
+                        bodyTable.appendChild(fila);
+                    }));
+                    tablaQuery.appendChild(bodyTable);
+                });
+            });
+        });
+
+        //Query3
+        document.addEventListener('DOMContentLoaded', function () {
+            let upload3 = document.getElementById('upload3');
+            upload3.addEventListener('click', function (e) {
+                e.preventDefault();
+                fetch('http://localhost:3000/query3?Club=Juventus').then(async function (resp) {
+                    let data = await resp.json();
+                    let tablaQuery = document.getElementById('query3');
+                    let bodyTable = document.createElement('tbody');
+                    //Style for bodyTable query3
+                    bodyTable.style.fontSize = '.9rem';
+
+                    data.forEach((d => {
+                        let fila = document.createElement('tr');
+
+                        td = document.createElement('td');
+                        td.innerText = d.Name;
+                        fila.appendChild(td);
+
+                        td = document.createElement('td');
+                        td.innerText = d.Club;
+                        fila.appendChild(td);
+
+                        td = document.createElement('td');
+                        td.innerText = d.JerseyNumber;
+                        fila.appendChild(td);
+
+                        bodyTable.appendChild(fila);
+                    }));
+                    tablaQuery.appendChild(bodyTable);
+                });
+            });
+        });
+
+        //Query4
+        document.addEventListener('DOMContentLoaded', function () {
+            let upload4 = document.getElementById('upload4');
+            upload4.addEventListener('click', function (e) {
+                e.preventDefault();
+                fetch('http://localhost:3000/query4?Club=Juventus').then(async function (resp) {
+                    let data = await resp.json();
+                    let tablaQuery = document.getElementById('query4');
+                    let bodyTable = document.createElement('tbody');
+                    //Style for bodyTable query4
+                    bodyTable.style.fontSize = '.9rem';
+
+                    data.forEach((d => {
+                        let fila = document.createElement('tr');
+
+                        td = document.createElement('td');
+                        td.innerText = d.Name;
+                        fila.appendChild(td);
+
+                        td = document.createElement('td');
+                        td.innerText = d.Overall;
+                        fila.appendChild(td);
+
+                        td = document.createElement('td');
+                        td.innerText = d.Club;
+                        fila.appendChild(td);
+
+                        bodyTable.appendChild(fila);
+                    }));
+                    tablaQuery.appendChild(bodyTable);
+                });
+            });
+        });
+
+        //Query5
+        document.addEventListener('DOMContentLoaded', function () {
+            let upload5 = document.getElementById('upload5');
+            upload5.addEventListener('click', function (e) {
+                e.preventDefault();
+                fetch('http://localhost:3000/query5?Club=Juventus').then(async function (resp) {
+                    let data = await resp.json();
+                    let tablaQuery = document.getElementById('query5');
+                    let bodyTable = document.createElement('tbody');
+                    //Style for bodyTable query5
+                    bodyTable.style.fontSize = '.9rem';
+
+                    data.forEach((d => {
+                        let fila = document.createElement('tr');
+
+                        td = document.createElement('td');
+                        td.innerText = d.Name;
+                        fila.appendChild(td);
+
+                        td = document.createElement('td');
+                        td.innerText = d.PreferredFoot;
+                        fila.appendChild(td);
+
+                        td = document.createElement('td');
+                        td.innerText = d.Club;
+                        fila.appendChild(td);
+
+                        bodyTable.appendChild(fila);
+                    }));
+                    tablaQuery.appendChild(bodyTable);
+                });
+            });
+        });
+
+    </script>
+   
+    <!--Finish secction scripts-->
+
+</body>
+
+</html>
